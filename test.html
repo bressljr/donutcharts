@@ -61,7 +61,7 @@ var pieSliceScale = d3.scale.linear()
   .range([10, 100]);
 
 var canvas = d3.select("body").append("svg")
-    .attr("width", w)
+    .attr("width", 250)
     .attr("height", h);
 
 
@@ -112,8 +112,42 @@ asdf.on("mouseout", function (d, i) {
     d3.select(this).transition().duration(200).attr("d", arc);
 });
 
+      
+var legend = canvas.append("g")
+  .attr("class", "legend")
+  .attr("id","ad")
+  .attr('transform', 'translate(30,30)');
 
-};
+    /*
+var rects = legend.selectAll('#ad')
+  .data(text)
+  .enter()
+  .append("rect")
+  .attr("x", function(d, i){ return i *  100;})
+  .attr("y", 50)
+  .attr("width", 10)
+  .attr("height", 10)
+  .style("fill",function(d,i){return color[i];});
+*/
+var texts = legend.selectAll('text')
+  .data(pie(dataset.citingdecisionanalysis))
+  .enter()
+  .append("text")
+  .attr("x", 100)
+  .attr("y",function(d, i){ return i * 17;})
+  .attr("class","leg_txt_font")
+  .text(function(d,i){ return d.data.props.text + " - " + d.data.props.count;})    
+
+   
+texts.on("mouseover", function (d) {
+    d3.select("." + d.data.props.text).transition().duration(200).attr("d", arc2);
+});
+    
+texts.on("mouseout", function (d, i) {
+    d3.select("." + d.data.props.text).transition().duration(200).attr("d", arc);
+});
+        
+};        
 </script>
   </head>
   <body>
@@ -122,25 +156,14 @@ asdf.on("mouseout", function (d, i) {
 </html>
 <style>
   body {
-   background:red;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  position: relative;
-  margin:0px;
-}
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      position: relative;
+      margin:0px;
+  }
 
-text {
-  font: 10px sans-serif;
-}
-
-form {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
-
-    
-svg .arc2 {
-   opacity: 0.5;
+.leg_txt_font { font-size:13px; font-family:arial; cursor:hand; }
+.leg_txt_font:hover {
+    font-weight: bold;
 }
 </style>
     
