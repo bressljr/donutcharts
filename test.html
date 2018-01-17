@@ -2,10 +2,93 @@
 <html lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>USA Map Example</title>
+    <title>Donut Charts</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script>
+      var dataset = {
+/*
+Warning - 89
+Questioned - 2
+Caution - 45
+Positive - 154
+Neutral - 631
+*/
+  "citingdecisionanalysis": [{
+    "props": {
+      "text": "Warning",
+      "count": 89
+    }
+  }, {
+    "props": {
+      "text": "Questioned",
+      "count": 2
+    }
+  }, {
+    "props": {
+      "text": "Caution",
+      "count": 45
+    }
+  }, {
+    "props": {
+      "text": "Positive",
+      "count": 154
+    }
+  }, {
+    "props": {
+      "text": "Neutral",
+      "count": 631
+    }
+  }]
+}
 
-    <script src="mapdata.js"></script>
-    <script src="usmap.js"></script>
+
+
+var width = 65,
+  height = 65,
+  radius = Math.min(width, height) / 2;
+
+
+var color = d3.scale.ordinal()
+  .range(['#AF002B', '#E98310', '#FFCC00 ', '#19A20F', '#003399'])
+  .domain(["Warning", "Questioned", "Caution", "Positive", "Neutral"]);
+
+var pieSliceScale = d3.scale.linear()
+  .domain([d3.min(dataset.citingdecisionanalysis, function(d) {
+    return d.props.count;
+  }), d3.mean(dataset.citingdecisionanalysis, function(d) {
+    return d.props.count;
+  })])
+  .range([10, 100]);
+
+var pie = d3.layout.pie()
+  .value(function(d) {
+    return pieSliceScale(d.props.count);
+  })
+  .sort(null);
+
+var arc = d3.svg.arc()
+  .innerRadius(radius - 8)
+  .outerRadius(radius - 0);
+
+var svg = d3.select("body").append("svg")
+  .attr("width", width)
+  .attr("height", height)
+  .append("g")
+  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+
+var path = svg.selectAll('path')
+  .data(pie(dataset.citingdecisionanalysis))
+  .enter()
+  .append('path')
+  .attr('d', arc)
+  .attr('stroke', '#fff')
+  .attr('stroke-width', 1)
+  .attr('fill', function(d, i) {
+    return color(d.data.props.text);
+  });
+</script>
   </head>
   <body>
     <div id="map"></div>
