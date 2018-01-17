@@ -6,6 +6,10 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script>
+$(function() {
+
+
+
       var dataset = {
 /*
 Warning - 89
@@ -88,15 +92,33 @@ var path = svg.selectAll('path')
   .attr('fill', function(d, i) {
     return color(d.data.props.text);
   });
+
+  console.log( "ready!" );
+});
 </script>
   </head>
   <body>
-    <div id="map"></div>
+
   </body>
 </html>
 <style>
-#map_inner > div { visibility:hidden !important; }
+  body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 960px;
+}
+
+text {
+  font: 10px sans-serif;
+}
+
+form {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
 </style>
-      
     
 
