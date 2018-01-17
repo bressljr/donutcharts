@@ -46,8 +46,6 @@ Neutral - 631
   }]
 }
 
-
-
 var color = d3.scale.ordinal()
   .range(['#AF002B', '#E98310', '#FFCC00 ', '#19A20F', '#003399'])
   .domain(["Warning", "Questioned", "Caution", "Positive", "Neutral"]);
@@ -61,7 +59,7 @@ var pieSliceScale = d3.scale.linear()
   .range([10, 100]);
 
 var canvas = d3.select("body").append("svg")
-    .attr("width", 250)
+    .attr("width", 230)
     .attr("height", h);
 
 
@@ -102,7 +100,31 @@ var asdf = arcs.append("path")
     .attr("fill", function (d) {
     return color(d.data.props.text);
 })
-      
+
+
+var total = d3.sum(dataset.citingdecisionanalysis, d => d.props.count)
+	// add text to center of donut
+	group.append("text")
+	      .attr("dy", "5px")
+	      .style("text-anchor", "middle")
+	      .style("font-size", "18px")
+          .style("font-weight", "bold")
+	      .attr("class", "inside")
+	      .attr("fill", "#000000")
+	      .text(total);
+
+
+
+
+// Append text to the inner circle
+/*
+group.append("text")
+  .style("text-anchor", "middle")
+  .attr("class", "inner-circle")
+  .attr("fill", "#36454f")
+  .text(function(d) { return 'TEST'; });
+*/
+
 var legend = canvas.append("g")
   .attr("class", "legend")
   .attr("id","ad")
