@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -6,11 +6,11 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script>
-$(function() {
+window.onload = function runD3code() {
+var w = 120,
+    h = 120;
 
-
-
-      var dataset = {
+var dataset = {
 /*
 Warning - 89
 Questioned - 2
@@ -48,11 +48,6 @@ Neutral - 631
 
 
 
-var width = 65,
-  height = 65,
-  radius = Math.min(width, height) / 2;
-
-
 var color = d3.scale.ordinal()
   .range(['#AF002B', '#E98310', '#FFCC00 ', '#19A20F', '#003399'])
   .domain(["Warning", "Questioned", "Caution", "Positive", "Neutral"]);
@@ -65,36 +60,75 @@ var pieSliceScale = d3.scale.linear()
   })])
   .range([10, 100]);
 
+var canvas = d3.select("body").append("svg")
+    .attr("width", w)
+    .attr("height", h);
+
+
+var group = canvas.append("g")
+    .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")");
+
+
+var r = Math.min(w, h) / 2;
+
+var arc = d3.svg.arc()
+    .outerRadius(r - 10)
+    .innerRadius(r-20);
+
+var arc2 = d3.svg.arc()
+    .outerRadius(r-5)
+    .innerRadius(r-20);
+
+
 var pie = d3.layout.pie()
   .value(function(d) {
     return pieSliceScale(d.props.count);
   })
   .sort(null);
 
-var arc = d3.svg.arc()
-  .innerRadius(radius - 8)
-  .outerRadius(radius - 0);
+var arcs = group.selectAll(".arc")
+    .data(pie(dataset.citingdecisionanalysis))
+    .enter()
+    .append("g")
+    .attr("class", "arc");
 
-var svg = d3.select("body").append("svg")
-  .attr("width", width)
-  .attr("height", height)
-  .append("g")
-  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-
-var path = svg.selectAll('path')
-  .data(pie(dataset.citingdecisionanalysis))
-  .enter()
-  .append('path')
-  .attr('d', arc)
-  .attr('stroke', '#fff')
-  .attr('stroke-width', 1)
-  .attr('fill', function(d, i) {
+var asdf = arcs.append("path")
+    .attr("d", arc)
+    .attr('stroke', '#fff')
+    .attr('stroke-width', 1)
+    .attr("fill", function (d) {
     return color(d.data.props.text);
-  });
+})
 
-  console.log( "ready!" );
+
+asdf.on("mouseover", function (d) {
+    d3.select(this).transition().duration(200).attr("d", arc2);
 });
+
+asdf.on("mouseout", function (d, i) {
+    d3.select(this).transition().duration(200).attr("d", arc);
+});
+
+var circle = group.append("circle")
+    .attr({
+        "cx": 0,
+        "cy": 0,
+        "r": r-7,
+        "fill": "none",
+        "stroke": "#fff",
+        "opacity": "0.50",
+        "stroke-width": 5
+    });
+var circle2 = group.append("circle2")
+    .attr({
+        "cx": 0,
+        "cy": 0,
+        "r": r-7,
+        "fill": "none",
+        "stroke": "#000",
+        "stroke-width": 7
+    });
+};
 </script>
   </head>
   <body>
@@ -104,7 +138,6 @@ var path = svg.selectAll('path')
 <style>
   body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  margin: auto;
   position: relative;
 }
 
@@ -118,6 +151,10 @@ form {
   top: 10px;
 }
 
+    
+svg .arc2 {
+   opacity: 0.5;
+}
 </style>
     
 
