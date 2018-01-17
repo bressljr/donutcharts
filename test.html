@@ -73,11 +73,11 @@ var r = Math.min(w, h) / 2;
 
 var arc = d3.svg.arc()
     .outerRadius(r - 10)
-    .innerRadius(r-20);
+    .innerRadius(r-25);
 
 var arc2 = d3.svg.arc()
     .outerRadius(r-5)
-    .innerRadius(r-20);
+    .innerRadius(r-25);
 
 
 var pie = d3.layout.pie()
@@ -95,7 +95,10 @@ var arcs = group.selectAll(".arc")
 var asdf = arcs.append("path")
     .attr("d", arc)
     .attr('stroke', '#fff')
-    .attr('stroke-width', 1)
+    .attr('stroke-width', 3)
+    .attr("class", function (d) {
+        return d.data.props.text;
+    })
     .attr("fill", function (d) {
     return color(d.data.props.text);
 })
@@ -109,25 +112,7 @@ asdf.on("mouseout", function (d, i) {
     d3.select(this).transition().duration(200).attr("d", arc);
 });
 
-var circle = group.append("circle")
-    .attr({
-        "cx": 0,
-        "cy": 0,
-        "r": r-7,
-        "fill": "none",
-        "stroke": "#fff",
-        "opacity": "0.50",
-        "stroke-width": 5
-    });
-var circle2 = group.append("circle2")
-    .attr({
-        "cx": 0,
-        "cy": 0,
-        "r": r-7,
-        "fill": "none",
-        "stroke": "#000",
-        "stroke-width": 7
-    });
+
 };
 </script>
   </head>
@@ -137,6 +122,7 @@ var circle2 = group.append("circle2")
 </html>
 <style>
   body {
+   background:red;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
   margin:0px;
