@@ -140,8 +140,7 @@
 
         var pie = d3.layout.pie()
           .value(function(d) {
-            //return pieSliceScale(d.props.count);
-              return d.props.count;
+            return resultNum === 0 ? pieSliceScale(d.props.count) : d.props.count;
           })
           .sort(null);
 
