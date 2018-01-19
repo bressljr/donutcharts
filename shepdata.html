@@ -165,6 +165,7 @@
         var w = 120,
             h = 120,
             resultNum = parseInt(getUrlVars()["resultNum"]),
+            showCount = getUrlVars()["showCount"],
             resultdata = dataset.results[resultNum].citingdecisionanalysis;
         
         var color = d3.scale.ordinal()
@@ -223,17 +224,18 @@
         })
 
         //ADD TOTAL COUNT TO CENTER
-        var total = d3.sum(resultdata, d => d.props.count)
+        if(showCount) {
+            var total = d3.sum(resultdata, d => d.props.count)
 
-        group.append("text")
-              .attr("dy", "5px")
-              .style("text-anchor", "middle")
-              .style("font-size", "18px")
-              .style("font-weight", "normal")
-              .attr("class", "inside")
-              .attr("fill", "#373739")
-              .text(total);
-
+            group.append("text")
+                  .attr("dy", "5px")
+                  .style("text-anchor", "middle")
+                  .style("font-size", "18px")
+                  .style("font-weight", "normal")
+                  .attr("class", "inside")
+                  .attr("fill", "#373739")
+                  .text(total);
+        }
 
         //CREATE LEGEND FOR TREATMENTS AND CORRESPONDING COUNTS
 
