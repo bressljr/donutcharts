@@ -1,0 +1,312 @@
+
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Donut Charts</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script>
+    // Read a page's GET URL variables and return them as an associative array.
+
+       var dataset = {
+            "results": [{
+                    "citingdecisionanalysis": [{
+                        "props": {
+                            "text": "Warning",
+                            "count": 89
+                        }
+                    }, {
+                        "props": {
+                            "text": "Questioned",
+                            "count": 2
+                        }
+                    }, {
+                        "props": {
+                            "text": "Caution",
+                            "count": 45
+                        }
+                    }, {
+                        "props": {
+                            "text": "Positive",
+                            "count": 154
+                        }
+                    }, {
+                        "props": {
+                            "text": "Neutral",
+                            "count": 631
+                        }
+                    }]
+                },
+                {
+                    "citingdecisionanalysis": [{
+                            "props": {
+                                "text": "Caution",
+                                "count": 2
+                            }
+                        },
+                        {
+                            "props": {
+                                "text": "Positive",
+                                "count": 7
+                            }
+                        },
+                        {
+                            "props": {
+                                "text": "Neutral",
+                                "count": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "citingdecisionanalysis": [{
+                        "props": {
+                            "text": "Neutral",
+                            "count": 16
+                        }
+                    }]
+                },
+                {
+                    "citingdecisionanalysis": [{
+                            "props": {
+                                "text": "Caution",
+                                "count": 1
+                            }
+                        },
+                        {
+                            "props": {
+                                "text": "Positive",
+                                "count": 2
+                            }
+                        },
+                        {
+                            "props": {
+                                "text": "Neutral",
+                                "count": 30
+                            }
+                        }
+                    ]
+                },
+                {
+                    "citingdecisionanalysis": [{
+                        "props": {
+                            "text": "Neutral",
+                            "count": 12
+                        }
+                    }]
+                }, {
+                    "citingdecisionanalysis": [{
+                            "props": {
+                                "text": "Caution",
+                                "count": 2
+                            }
+                        },
+                        {
+                            "props": {
+                                "text": "Positive",
+                                "count": 1
+                            }
+                        },
+                        {
+                            "props": {
+                                "text": "Neutral",
+                                "count": 9
+                            }
+                        }
+                    ]
+                }, {
+                    "citingdecisionanalysis": [{
+                            "props": {
+                                "text": "Positive",
+                                "count": 2
+                            }
+                        },
+                        {
+                            "props": {
+                                "text": "Neutral",
+                                "count": 10
+                            }
+                        }
+                    ]
+                }, {
+                    "citingdecisionanalysis": [{
+                            "props": {
+                                "text": "Positive",
+                                "count": 3
+                            }
+                        },
+                        {
+                            "props": {
+                                "text": "Neutral",
+                                "count": 5
+                            }
+                        }
+                    ]
+                }
+            ]
+        }   
+        
+        
+    window.onload = function runD3code() {
+
+        function getUrlVars()
+        {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for(var i = 0; i < hashes.length; i++)
+            {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+        
+        var w = 120,
+            h = 120,
+            resultNum = parseInt(getUrlVars()["resultNum"]),
+            resultdata = dataset.results[resultNum].citingdecisionanalysis;
+        
+        var color = d3.scale.ordinal()
+          .range(['#AF002B', '#E98310', '#FFCC00 ', '#19A20F', '#003399'])
+          .domain(["Warning", "Questioned", "Caution", "Positive", "Neutral"]);
+
+        var pieSliceScale = d3.scale.linear()
+          .domain([d3.min(resultdata, function(d) {
+            return d.props.count;
+          }), d3.mean(resultdata, function(d) {
+            return d.props.count;
+          })])
+          .range([10, 100]);
+
+        var canvas = d3.select("body").append("svg")
+            .attr("width", 230)
+            .attr("height", h);
+
+
+        var group = canvas.append("g")
+            .attr("transform", "translate(" + w / 2 + "," + h / 2 + ")");
+
+
+        var r = Math.min(w, h) / 2;
+
+        var arc = d3.svg.arc()
+            .outerRadius(r - 10)
+            .innerRadius(r-25);
+
+        var arc2 = d3.svg.arc()
+            .outerRadius(r-5)
+            .innerRadius(r-25);
+
+
+        var pie = d3.layout.pie()
+          .value(function(d) {
+            return resultNum === 0 ? pieSliceScale(d.props.count) : d.props.count;
+          })
+          .sort(null);
+
+        var arcs = group.selectAll(".arc")
+            .data(pie(resultdata))
+            .enter()
+            .append("g")
+            .attr("class", "arc");
+
+        var asdf = arcs.append("path")
+            .attr("d", arc)
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 3)
+            .attr("class", function (d) {
+                return d.data.props.text;
+            })
+            .attr("fill", function (d) {
+            return color(d.data.props.text);
+        })
+
+        //ADD TOTAL COUNT TO CENTER
+        /*
+        var total = d3.sum(resultdata, d => d.props.count)
+       
+        group.append("text")
+              .attr("dy", "5px")
+              .style("text-anchor", "middle")
+              .style("font-size", "18px")
+              .style("font-weight", "normal")
+              .attr("class", "inside")
+              .attr("fill", "#373739")
+              .text(total);
+        */
+
+        //CREATE LEGEND FOR TREATMENTS AND CORRESPONDING COUNTS
+
+        var legend = canvas.append("g")
+          .attr("class", "legend")
+          .attr("id","ad")
+          .attr('transform', 'translate(30,30)');
+
+        /*
+        var rects = legend.selectAll('#ad')
+          .data(text)
+          .enter()
+          .append("rect")
+          .attr("x", function(d, i){ return i *  100;})
+          .attr("y", 50)
+          .attr("width", 10)
+          .attr("height", 10)
+          .style("fill",function(d,i){return color[i];});
+        */
+
+        var texts = legend.selectAll('text')
+          .data(pie(resultdata))
+          .enter()
+          .append("text")
+          .attr("x", 100)
+          .attr("y",function(d, i){ return i * 17;})
+          .attr("class", function (d) {
+                return d.data.props.text + " leg_txt_font";
+            })
+          .text(function(d,i){ return d.data.props.text + " - " + d.data.props.count;})    
+
+
+        //CREATE MOUSEOVERS WITH TWO-WAY COMMUNICATION BETWEEN CHART AND LEGEND (NEED CLEANED UP)
+        asdf.on("mouseover", function (d) {
+            d3.select(this).transition().duration(200).attr("d", arc2);
+            d3.select(".leg_txt_font." + d.data.props.text).attr("font-weight","bold");
+        });
+
+        asdf.on("mouseout", function (d, i) {
+            d3.select(this).transition().duration(200).attr("d", arc);
+            d3.select(".leg_txt_font." + d.data.props.text).attr("font-weight","normal");
+        });
+
+        texts.on("mouseover", function (d) {
+            d3.select("." + d.data.props.text).transition().duration(200).attr("d", arc2);
+        });
+
+        texts.on("mouseout", function (d, i) {
+            d3.select("." + d.data.props.text).transition().duration(200).attr("d", arc);
+        });
+        
+};        
+</script>
+  </head>
+  <body>
+
+  </body>
+</html>
+<style>
+      body {
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          position: relative;
+          margin:0px;
+          color:#373739;
+      }
+
+    .arc { cursor:hand; }
+    
+    .leg_txt_font { font-size:13px; font-family:arial; cursor:hand; color:#373739; }
+    .leg_txt_font:hover {
+        font-weight: bold;
+    }
+</style>
+    
+
