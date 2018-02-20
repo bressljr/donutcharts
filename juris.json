@@ -1,68 +1,10 @@
 [{
-	"text": "Alabama",
-	"value": 1,
-	"checked": false,
-	"children": [{
-		"text": "Alabama Supreme Court",
-		"value": 2,
-		"checked": false
-	}, {
-		"text": "Alabama Court of Civil Appeals",
-		"value": 3,
-		"checked": false
-	}, {
-		"text": "Alabama Court of Criminal Appeals",
-		"value": 4,
-		"checked": false
-	}, {
-		"text": "Alabama Court of Appeals",
-		"value": 5,
-		"checked": false
-	}, {
-		"text": "Alabama Circuit Court",
-		"value": 6,
-		"checked": false
-	}]
+  "name": "Ho Chi Minh",
+  "postCode": 700000
 }, {
-	"text": "Alaska",
-	"value": 7,
-	"checked": false,
-	"children": [{
-		"text": "Alaska Supreme Court",
-		"value": 8,
-		"checked": false
-	}, {
-		"text": "Alaska Court of Appeals",
-		"value": 9,
-		"checked": false
-	}, {
-		"text": "Alaska District Courts",
-		"value": 10,
-		"checked": false
-	}, {
-		"text": "Alaska Superior Courts",
-		"value": 11,
-		"checked": false
-	}]
+  "name": "Ha Noi",
+  "postCode": 100000
 }, {
-	"text": "",
-	"value": 12,
-	"checked": false,
-	"children": [{
-		"text": "Puerto Rico Supreme Court",
-		"value": 13,
-		"checked": false
-	}, {
-		"text": "Puerto Rico Court of Appeals",
-		"value": 14,
-		"checked": false
-	}, {
-		"text": "Puerto Rico Court of Appeals (Tribunal De Apelaciones de Puerto Rico)",
-		"value": 15,
-		"checked": false
-	}, {
-		"text": "Puerto Rico Superior Ct",
-		"value": 16,
-		"checked": false
-	}]
+  "name": "Da Nang",
+  "postCode": 550000
 }]
