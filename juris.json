@@ -1,10 +1,18 @@
-[{
-  "name": "Ho Chi Minh",
-  "postCode": 700000
-}, {
-  "name": "Ha Noi",
-  "postCode": 100000
-}, {
-  "name": "Da Nang",
-  "postCode": 550000
-}]
+[
+  {
+    "name": "Maine",
+    "postCode": 18,
+    "children": [
+      {
+        "name": "Bankr. App. Panel 1st Cir. Maine",
+        "postCode": 19,
+        "children": []
+      },
+      {
+        "name": "Bankr. Dist. Maine",
+        "postCode": 20,
+        "children": []
+      }
+    ]
+  }
+]
